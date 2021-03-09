@@ -49,7 +49,7 @@ class ChatsManager
      * @return {Promise<import("./messages").TelegramMessage>} Promise of found message. Rejects if not found.
      */
     async findLastMessage(chatId, filter) {
-        return this.store.findLast(1, chatId, filter);
+        return this.store.findLast(chatId, filter, 1);
     }
 
 
@@ -62,7 +62,7 @@ class ChatsManager
      * Resolves with empty array if no messages were found. 
      */
     async findLastMessages(chatId, filter, limit) {
-        return this.store.findLast(limit, chatId, filter);
+        return this.store.findLast(chatId, filter, limit);
     }
 
     /**
@@ -95,7 +95,7 @@ class ChatsManager
      * @return {Promise<Number>} Promise of deleted message's id. Rejects if no message was found. 
      */
     async deleteLastMessage(chatId, filter) {
-        return this.store.deleteLast(1, chatId, filter);
+        return this.store.deleteLast(chatId, filter, 1);
     }
 
     /**
@@ -107,7 +107,7 @@ class ChatsManager
      * Resolves with empty array if no messages were found.
      */
     async deleteLastMessages(chatId, filter, limit) {
-        return this.store.deleteLast(limit, chatId, filter);
+        return this.store.deleteLast(chatId, filter, limit);
     }
 }
 
