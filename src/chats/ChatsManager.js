@@ -96,10 +96,14 @@ class ChatsManager {
      * Deletes last message that matches specified filter.
      * @param {Number} chatId Telegram chat ID. See: (@link https://core.telegram.org/bots/api#chat).
      * @param {import("./messages").TelegramMessagesFilter} [filter] Object representing a messages filter.
-     * @return {Promise<Number>} Promise of deleted message's id. Undefined if no message was found.
+     * @return {Promise<Number>} Promise of deleted message. Undefined if no message was found.
      */
     async deleteLastMessage(chatId, filter) {
-        return this.store.deleteLast(chatId, filter, 1);
+        const deleted = this.store.deleteLast(chatId, filter, 1);
+        if (!!deleted && deleted.length > 0) {
+            return deleted[0];
+        }
+        return undefined;
     }
 
     /**
@@ -121,8 +125,8 @@ class ChatsManager {
      * @return {Promise<Number[]>} Promise of array of deleted messages.
      * Resolves with empty array if no messages were found.
      */
-    async deleteLastMessages(chatId, filter) {
-        return this.store.deleteLast(chatId, filter, limit);
+    async deleteMessages(chatId, filter) {
+        return this.store.delete(chatId, filter);
     }
 }
 
