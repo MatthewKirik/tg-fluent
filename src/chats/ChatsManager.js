@@ -34,7 +34,7 @@ class ChatsManager {
      */
     async saveMessage(message, role, tags, additionalData) {
         const data = this.mapMessage(message, role, tags, additionalData);
-        return this.store.save(data);
+        return await this.store.save(data);
     }
 
     /**
@@ -44,7 +44,7 @@ class ChatsManager {
      * @return {Promise<import("./messages").TelegramMessage>} Promise of found message. Rejects if not found.
      */
     async getMessageById(chatId, messageId) {
-        return this.store.getById(chatId, messageId);
+        return await this.store.getById(chatId, messageId);
     }
 
     /**
@@ -54,7 +54,7 @@ class ChatsManager {
      * @return {Promise<import("./messages").TelegramMessage>} Promise of found message. Null if not found.
      */
     async findLastMessage(chatId, filter) {
-        return this.store.findLast(chatId, filter, 1);
+        return await this.store.findLast(chatId, filter, 1);
     }
 
     /**
@@ -66,7 +66,7 @@ class ChatsManager {
      * Resolves with empty array if no messages were found.
      */
     async findLastMessages(chatId, filter, limit) {
-        return this.store.findLast(chatId, filter, limit);
+        return await this.store.findLast(chatId, filter, limit);
     }
 
     /**
@@ -79,7 +79,7 @@ class ChatsManager {
      * @return {Promise} Promise that rejects if message was not found.
      */
     async updateMessage(chatId, messageId, { tags, data }) {
-        return this.store.update(chatId, messageId, tags, data);
+        return await this.store.update(chatId, messageId, tags, data);
     }
 
     /**
@@ -89,7 +89,7 @@ class ChatsManager {
      * @return {Promise} Promise that rejects if message was not found.
      */
     async deleteMessageById(chatId, messageId) {
-        return this.store.deleteById(chatId, messageId);
+        return await this.store.deleteById(chatId, messageId);
     }
 
     /**
@@ -99,7 +99,7 @@ class ChatsManager {
      * @return {Promise<Number>} Promise of deleted message. Undefined if no message was found.
      */
     async deleteLastMessage(chatId, filter) {
-        const deleted = this.store.deleteLast(chatId, filter, 1);
+        const deleted = await this.store.deleteLast(chatId, filter, 1);
         if (!!deleted && deleted.length > 0) {
             return deleted[0];
         }
@@ -115,7 +115,7 @@ class ChatsManager {
      * Resolves with empty array if no messages were found.
      */
     async deleteLastMessages(chatId, filter, limit) {
-        return this.store.deleteLast(chatId, filter, limit);
+        return await this.store.deleteLast(chatId, filter, limit);
     }
 
     /**
@@ -126,7 +126,37 @@ class ChatsManager {
      * Resolves with empty array if no messages were found.
      */
     async deleteMessages(chatId, filter) {
-        return this.store.delete(chatId, filter);
+        return await this.store.delete(chatId, filter);
+    }
+
+    /**
+     * Pushes specified records to the history of a user.
+     * @param {Number} chatId Telegram chat ID. See: (@link https://core.telegram.org/bots/api#chat).
+     * @param {String[]} records History records to be written.
+     * @return {Promise} Promise.
+     */
+    async pushHistory(chatId, ...records) {
+        await this.store.pushHistory(chatId, records);
+    }
+
+    /**
+     * Removes records from the history of a user and returns them.
+     * @param {Number} chatId Telegram chat ID. See: (@link https://core.telegram.org/bots/api#chat).
+     * @param {Number} [limit] Maximal amount of records to be removed.
+     * @return {Promise<String[]>} Promise of array of removed records.
+     */
+    async popHistory(chatId, limit = undefined) {
+        return await this.store.popHistory(chatId, limit);
+    }
+
+    /**
+     * Reads the history of a user.
+     * @param {Number} chatId Telegram chat ID. See: (@link https://core.telegram.org/bots/api#chat).
+     * @param {Number} [limit] Maximal amount of records to be returned.
+     * @return {Promise<String[]>} Read records.
+     */
+    async readHistory(chatId, limit) {
+        return await this.store.readHistory(chatId, limit);
     }
 }
 
