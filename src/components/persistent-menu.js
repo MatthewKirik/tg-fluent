@@ -1,3 +1,5 @@
+'use strict';
+
 const { getRawMarkup } = require('../utils/inline-keyboard');
 
 class PersistentMenuBaseComponent {
@@ -17,9 +19,9 @@ class PersistentMenuBaseComponent {
 
     async onUpdate(params) {
         const callbackData = params?.update?.callback_query?.data;
-        if (!!callbackData) {
+        if (callbackData) {
             const callback = this.callbacks.get(callbackData);
-            if (!!callback) callback();
+            if (callback) callback();
         }
     }
 
@@ -33,7 +35,7 @@ class PersistentMenuBaseComponent {
                 tags: ['persistent-menu'],
             });
         }
-        if (!!existingMsg) {
+        if (existingMsg) {
             await bot.editMessageText(this.menu.title, {
                 chat_id: chatId,
                 message_id: existingMsg.id,
@@ -54,7 +56,7 @@ class PersistentMenuBaseComponent {
             const existingMsg = await findLastMessage(chatId, {
                 tags: ['persistent-menu'],
             });
-            if (!!existingMsg) {
+            if (existingMsg) {
                 bot.deleteMessage(chatId, existingMsg.id);
             }
         }

@@ -1,3 +1,5 @@
+'use strict';
+
 const fieldsWithChatId = {
     message: (update) => update.message.chat.id,
     edited_message: (update) => update.edited_message.chat.id,
@@ -11,7 +13,7 @@ const fieldsWithChatId = {
 const getUpdateChatId = (update) => {
     for (const key in fieldsWithChatId) {
         if (Object.hasOwnProperty.call(fieldsWithChatId, key)) {
-            if (!!update[key]) {
+            if (update[key]) {
                 const projection = fieldsWithChatId[key];
                 return projection(update);
             }

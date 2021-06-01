@@ -1,3 +1,5 @@
+'use strict';
+
 const Route = require('./route');
 const utils = require('../utils');
 const { parsePath } = require('./path');
@@ -22,18 +24,17 @@ class TelegramRouter {
 
     async onUpdate(update) {
         const chatId = utils.getUpdateChatId(update);
-        if (!!chatId) {
+        if (chatId) {
             const route = await this._getOpenedRoute(chatId);
             if (!route || !route.component) return;
             if (route.passesGates(update)) {
-                component.onUpdate(chatId, update);
+                route.component.onUpdate(chatId, update);
             }
         }
     }
 
     register(path, component = null, gates = []) {
-        path = path.replace(trimSlashRegex, '');
-        const parts = path.split('/');
+        const { parts } = parsePath(path);
         const totalGates = new Set(gates);
 
         let route = this.rootRoute;

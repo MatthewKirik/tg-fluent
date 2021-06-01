@@ -1,11 +1,13 @@
+'use strict';
+
 const trimSlashRegex = new RegExp('^[/]+|[/]+$', 'g');
 
 const parsePath = (path) => {
     const parts = path.split('?');
 
-    const routePart = parts[0];
+    let routePart = parts[0];
     routePart = routePart.replace(trimSlashRegex, '');
-    const routeUnits = trimmed.split('/');
+    const routeUnits = routePart.split('/');
 
     const params = {};
     if (parts.length > 1) {
@@ -28,7 +30,7 @@ const createPath = (path, params) => {
     for (const key in params) {
         if (Object.hasOwnProperty.call(params, key)) {
             const value = params[key];
-            if (!!value.toString) {
+            if (value.toString) {
                 if (ix > 0) pathWithParams += '&';
                 pathWithParams += key + '=' + value.toString();
                 ix++;

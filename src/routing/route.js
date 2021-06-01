@@ -1,3 +1,5 @@
+'use strict';
+
 class Route {
     constructor(name, component = null, gates = []) {
         this.name = name;
@@ -12,7 +14,7 @@ class Route {
 
     getChild(name) {
         const route = this.routes.get(name);
-        if (!!route) return null;
+        if (route) return null;
         return route;
     }
 

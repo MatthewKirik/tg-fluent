@@ -1,9 +1,11 @@
+'use strict';
+
 const crypto = require('crypto');
 
 const hash = crypto.createHash('md5');
 
 const button = (text, callback, callbackData = null) => {
-    const callback_data = callbackData ?? callback.name;
+    let callback_data = callbackData ?? callback.name;
     if (callback_data === '' || callback_data === 'anonymous') {
         callback_data = callback.toString();
     }
