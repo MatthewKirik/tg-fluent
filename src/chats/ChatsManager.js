@@ -1,6 +1,7 @@
 'use strict';
 
-const messages = require('./messages');
+const { errors } = require('../locale');
+const messages = require('./messages.js');
 
 class ChatsManager {
     /**
@@ -11,19 +12,15 @@ class ChatsManager {
      * Use tg-fluent's "createMessageMapper" function to create mapper.
      */
     constructor(store, mapper) {
-        if (typeof store === 'object') this.store = store;
-        else
-            throw Error(
-                'Store should be an object that implements interface for saving persistent data!'
-            );
+        if (typeof store !== 'object')
+            throw Error(errors.ERR_OBJ_EXPECTED('Store'));
+        this.store = store;
 
-        if (typeof mapper === 'undefined')
+        const mapperType = typeof mapper;
+        if (mapperType === 'undefined')
             this.mapMessage = messages.createMessageMapper();
-        else if (typeof mapper === 'function') this.mapMessage = mapper;
-        else
-            throw Error(
-                'Mapper should be a function! Consider using tg-fluent "createMessageMapper" function.'
-            );
+        else if (mapperType === 'function') this.mapMessage = mapper;
+        else throw Error(errors.ERR_FUNC_EXPECTED('Mapper'));
     }
 
     /**
@@ -102,9 +99,7 @@ class ChatsManager {
      */
     async deleteLastMessage(chatId, filter) {
         const deleted = await this.store.deleteLast(chatId, filter, 1);
-        if (!!deleted && deleted.length > 0) {
-            return deleted[0];
-        }
+        if (!!deleted && deleted.length > 0) return deleted[0];
         return undefined;
     }
 

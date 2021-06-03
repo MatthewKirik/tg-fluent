@@ -1,5 +1,5 @@
 'use strict';
 
-const TelegramRouter = require('./router');
+const TelegramRouter = require('./router.js');
 
 module.exports = { TelegramRouter };

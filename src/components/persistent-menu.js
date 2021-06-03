@@ -1,6 +1,6 @@
 'use strict';
 
-const { getRawMarkup } = require('../utils/inline-keyboard');
+const { getRawMarkup } = require('../utils/inline-keyboard.js');
 
 class PersistentMenuBaseComponent {
     setMenu(title, markup) {
@@ -10,11 +10,11 @@ class PersistentMenuBaseComponent {
             raw_markup: getRawMarkup(markup),
         };
         this.callbacks = new Map();
-        this.menu.markup.foreach((row) =>
-            row.foreach((btn) =>
-                this.callbacks.set(btn.data.callback_data, btn.callback)
-            )
-        );
+        for (const row of this.menu.markup) {
+            for (const btn of row) {
+                this.callbacks.set(btn.data.callback_data, btn.callback);
+            }
+        }
     }
 
     async onUpdate(params) {
@@ -27,10 +27,9 @@ class PersistentMenuBaseComponent {
 
     async open({ chatId, previousComponent, findLastMessage, bot }) {
         let existingMsg = null;
-        if (
-            previousComponent &&
-            previousComponent instanceof PersistentMenuBaseComponent
-        ) {
+        const isPreviousTheSame =
+            previousComponent instanceof PersistentMenuBaseComponent;
+        if (isPreviousTheSame) {
             existingMsg = await findLastMessage(chatId, {
                 tags: ['persistent-menu'],
             });
@@ -50,7 +49,6 @@ class PersistentMenuBaseComponent {
 
     async close({ chatId, nextComponent, findLastMessage, bot }) {
         const isNextTheSame =
-            nextComponent &&
             nextComponent instanceof PersistentMenuBaseComponent;
         if (!isNextTheSame) {
             const existingMsg = await findLastMessage(chatId, {

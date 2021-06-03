@@ -27,14 +27,12 @@ const parsePath = (path) => {
 const createPath = (path, params) => {
     let pathWithParams = path + '?';
     let ix = 0;
-    for (const key in params) {
-        if (Object.hasOwnProperty.call(params, key)) {
-            const value = params[key];
-            if (value.toString) {
-                if (ix > 0) pathWithParams += '&';
-                pathWithParams += key + '=' + value.toString();
-                ix++;
-            }
+    for (const key of Object.keys(params)) {
+        const value = params[key];
+        if (value.toString) {
+            if (ix > 0) pathWithParams += '&';
+            pathWithParams += key + '=' + value.toString();
+            ix++;
         }
     }
     return pathWithParams;

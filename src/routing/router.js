@@ -1,8 +1,8 @@
 'use strict';
 
-const Route = require('./route');
+const Route = require('./route.js');
 const utils = require('../utils');
-const { parsePath } = require('./path');
+const { parsePath } = require('./path.js');
 
 class TelegramRouter {
     constructor(bot, chatManager) {
