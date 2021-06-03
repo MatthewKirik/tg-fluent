@@ -1,19 +1,24 @@
 {
-  "name": "tg-fluent",
-  "version": "0.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/MatthewKirik/tg-fluent.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/MatthewKirik/tg-fluent/issues"
-  },
-  "homepage": "https://github.com/MatthewKirik/tg-fluent#readme"
+    "name": "tg-fluent",
+    "version": "0.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "lint": "eslint . --fix && prettier --write \"**/*.js\" \"**/*.json\""
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/MatthewKirik/tg-fluent.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/MatthewKirik/tg-fluent/issues"
+    },
+    "homepage": "https://github.com/MatthewKirik/tg-fluent#readme",
+    "devDependencies": {
+        "eslint": "^7.27.0",
+        "prettier": "^2.3.0"
+    }
 }
