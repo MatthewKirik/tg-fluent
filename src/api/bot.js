@@ -45,6 +45,30 @@ class Bot
     { 
         return this.send('Message', id, value, additional);
     };
+    edit ( type, chat_id, message_id, value, additional = null )
+    {
+        const params = {
+            chat_id: chat_id,
+            message_id: message_id,
+            [type.toLowerCase()]: value
+        };
+        if ( additional ) 
+            for ( [key,value] of additional )
+                params.key = value;
+        const result = this.req( `editMessage${type}`, params );
+        if ( result ) return 'Succesfully edited';
+        else return 'Unexpected error';
+    };
+    delete ( chat_id, message_id )
+    {
+        const params = {
+            chat_id: chat_id,
+            message_id: message_id
+        };
+        const result = this.req( `deleteMessage`, params );
+        if ( result ) return 'Succesfully deleted';
+        else return 'Unexpected error';
+    };
 }
 
 export default Bot;
