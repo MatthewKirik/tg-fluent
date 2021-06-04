@@ -28,20 +28,22 @@ class Bot
             return;
         } );
     };
-    send ( type, id, value, caption = null )
+    send ( type, id, value, additional )
     {
         const params = {
             id: id,
             [type.toLowerCase()]: value
         };
-        if ( caption ) params.caption = caption;
+        if ( additional ) 
+            for ( [key,value] of additional )
+                params.key = value;
         const result = this.req( `send${type}`, params );
         if ( result ) return 'Succesfully sent';
         else return 'Unexpected error';
     };
-    sendMessage ( id, value, { caption } )
+    sendMessage ( id, value, additional = null )
     { 
-        return this.send('Message', id, value, caption);
+        return this.send('Message', id, value, additional);
     };
 }
 
